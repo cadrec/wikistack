@@ -1,7 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
+const wikiRouter = require('./routes/wiki');
+const usersRouter = require('./routes/users');
 const { db, Page, User } = require('./models');
 const app = express();
+
 
 app.use(morgan('dev'));
 app.use(express.static(__dirname + '/stylesheets'));
@@ -17,6 +20,7 @@ const syncUp = async () =>{
     }
 }
 
+app.use('/wiki', wikiRouter);
 
 app.get('/', (req, res) => {
     //try{
@@ -25,6 +29,10 @@ app.get('/', (req, res) => {
     // catch(err){
     //     throw err;
     // }
+})
+
+app.get('/', (req, res, next) => {
+    res.redirect('/wiki');
 })
 
 app.listen(3000);
