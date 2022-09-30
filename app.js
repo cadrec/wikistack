@@ -21,6 +21,7 @@ const syncUp = async () =>{
 }
 
 app.use('/wiki', wikiRouter);
+//app.use('/users', usersRouter);
 
 app.get('/', (req, res) => {
     //try{

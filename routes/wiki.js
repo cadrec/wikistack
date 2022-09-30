@@ -3,6 +3,8 @@ const addPage = require('../views/addPage');
 const { Page, User } = require('../models');
 const wikiPage = require('../views/wikiPage');
 const main = require('../views/main');
+const userList = require('../views/userList');
+const userPages = require('../views/userPages');
 
 router.get('/', async (req, res, next) => {
     const pages = await Page.findAll();
@@ -37,6 +39,32 @@ router.get('/add', (req, res, next) => {
     res.send(addPage());
 })
 
+router.get('/users', async (req, res, next) => {
+    try{
+        const user = await User.findAll();
+        res.send(userList(user));
+    }
+    catch(err){
+        next(err);
+    }
+})
+
+router.get('users/id', async (req, res, next) => {
+    try{
+        const authorName = await User.findOne({
+            where: {
+                name: req.params.author
+            }
+        })
+        const pages = await Page.findAll()
+        console.log("pages >>>>>>", authorName);
+        res.send(userPages(authorName, pages));
+    }
+    catch(err){
+        next(err);
+    }
+})
+
 router.get('/:slug', async (req, res, next) => {
     try {
         //This is looking for the page of the slug
@@ -52,7 +80,7 @@ router.get('/:slug', async (req, res, next) => {
             }
         })
 
-        console.log("The author id >>>>", authorId.name);
+        //console.log("The author id >>>>", authorId.name);
         res.send(wikiPage(page, authorId.name));
     }
     catch(err){
