@@ -12,5 +12,6 @@ module.exports = (pages) => layout(html`
   <ul class="list-unstyled">
     <ul>
       <!-- PLACEHOLDER LIST OF PAGES -->
+      ${pages.map(page => `<a href="http://localhost:3000/wiki/${page.slug}"><li>${page.slug}</li></a>`)}
     </ul>
   </ul>`);
